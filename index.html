@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Seating Arrangement</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Playfair Display', serif;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #fdf2f8, #ffe4e6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: #4b5563;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Decorative Background Elements */
+        .bg-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .bg-circle-1 {
+            position: absolute;
+            top: -40px;
+            left: -40px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-color: #fbcfe8;
+        }
+        
+        .bg-circle-2 {
+            position: absolute;
+            top: 25%;
+            right: -40px;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background-color: #fda4af;
+        }
+        
+        .bg-circle-3 {
+            position: absolute;
+            bottom: 33%;
+            left: -80px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background-color: #fce7f3;
+        }
+        
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 28rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            border: 1px solid #fce7f3;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* Heart Icon */
+        .heart-icon {
+            position: absolute;
+            top: -48px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 64px;
+            fill: #f43f5e;
+            color: #f43f5e;
+            animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s backwards;
+        }
+        
+        /* Typography */
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            text-align: center;
+            font-size: 2.25rem;
+            color: #9f1239;
+            margin-bottom: 2rem;
+            margin-top: 1rem;
+        }
+        
+        label {
+            display: block;
+            color: #be123c;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .button:hover {
+            transform: scale(1.03);
+        }
+        
+        .button:active {
+            transform: scale(0.97);
+        }
+        
+        .button.selected-groom {
+            background-color: #dbeafe;
+            border: 2px solid #93c5fd;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button.selected-bride {
+            background-color: #fce7f3;
+            border: 2px solid #fbcfe8;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button.selected-friend {
+            background-color: #fef3c7;
+            border: 2px solid #fde68a;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button.selected-relative {
+            background-color: #d1fae5;
+            border: 2px solid #a7f3d0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button.selected-friend-detail {
+            background-color: #f3e8ff;
+            border: 2px solid #e9d5ff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button.selected-relative-detail {
+            background-color: #ccfbf1;
+            border: 2px solid #99f6e4;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .button-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .button-text {
+            font-weight: 500;
+        }
+        
+        .button.selected-groom .button-icon,
+        .button.selected-groom .button-text {
+            color: #2563eb;
+        }
+        
+        .button.selected-bride .button-icon,
+        .button.selected-bride .button-text {
+            color: #db2777;
+        }
+        
+        .button.selected-friend .button-icon,
+        .button.selected-friend .button-text {
+            color: #d97706;
+        }
+        
+        .button.selected-relative .button-icon,
+        .button.selected-relative .button-text {
+            color: #059669;
+        }
+        
+        .button.selected-friend-detail .button-icon,
+        .button.selected-friend-detail .button-text {
+            color: #7c3aed;
+        }
+        
+        .button.selected-relative-detail .button-icon,
+        .button.selected-relative-detail .button-text {
+            color: #0d9488;
+        }
+        
+        .detail-button {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .detail-button:hover {
+            transform: scale(1.03);
+        }
+        
+        .detail-button:active {
+            transform: scale(0.97);
+        }
+        
+        .detail-button-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+        }
+        
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            border: 2px solid #fbcfe8;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #4b5563;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23be123c'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #f9a8d4;
+            box-shadow: 0 0 0 3px rgba(249, 168, 212, 0.5);
+        }
+        
+        /* Result Box */
+        .result-container {
+            margin-top: 2rem;
+            position: relative;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .result-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, #fbcfe8, #fda4af);
+            border-radius: 1rem;
+            filter: blur(12px);
+            opacity: 0.5;
+            transform: scale(1.05);
+        }
+        
+        .result-content {
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border-radius: 1rem;
+            border: 2px solid #fbcfe8;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-pin-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 0.75rem;
+            color: #f43f5e;
+        }
+        
+        .result-name {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #4b5563;
+            margin-bottom: 0.25rem;
+        }
+        
+        .result-table {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #be123c;
+            margin-top: 0.5rem;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: rgba(190, 18, 60, 0.7);
+            font-size: 0.875rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .section-transition {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.3s ease, margin 0.3s ease;
+        }
+        
+        .section-transition.active {
+            max-height: 500px;
+            opacity: 1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.875rem;
+            }
+            
+            .button-text {
+                font-size: 0.875rem;
+            }
+        }
+        
+        /* Canvas for confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Couple Image Styles */
+        .couple-image-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .couple-image {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 3px solid white;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .couple-image-frame {
+            position: relative;
+            display: inline-block;
+            padding: 8px;
+            background: linear-gradient(45deg, #fecdd3, #fbcfe8, #f5d0fe);
+            border-radius: 1.2rem;
+            box-shadow: 0 6px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .couple-image-frame::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #f9a8d4, #fda4af, #c4b5fd);
+            border-radius: 1.5rem;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(8px);
+        }
+        
+        .couple-names {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            color: #be123c;
+            margin-top: 1rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Decorations -->
+    <div class="bg-decoration">
+        <div class="bg-circle-1"></div>
+        <div class="bg-circle-2"></div>
+        <div class="bg-circle-3"></div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Heart Icon -->
+        <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+        </svg>
+        
+        <h1>ลงทะเบียนเข้างานแต่งงาน</h1>
+        
+        <!-- Couple Image -->
+        <div class="couple-image-container">
+            <div class="couple-image-frame">
+                <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/S__8044663.jpg-bkXy1vqNZeueCR55fs4yCUJUR9lrnY.jpeg" alt="Bride and Groom with Cats" class="couple-image">
+            </div>
+            <div class="couple-names">Somchai & Somying</div>
+        </div>
+        
+        <!-- Form Sections -->
+        <div class="form-group">
+            <label>คุณเกี่ยวข้องกับใคร?</label>
+            <div class="button-grid">
+                <div id="groom-btn" class="button" onclick="selectPersonType('groom')">
+                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span class="button-text">เจ้าบ่าว</span>
+                </div>
+                <div id="bride-btn" class="button" onclick="selectPersonType('bride')">
+                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span class="button-text">เจ้าสาว</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="relation-section" class="section-transition">
+            <label>ความสัมพันธ์?</label>
+            <div class="button-grid">
+                <div id="friend-btn" class="button" onclick="selectRelation('friend')">
+                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span class="button-text">เพื่อน</span>
+                </div>
+                <div id="relative-btn" class="button" onclick="selectRelation('relative')">
+                    <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    <span class="button-text">ญาติ</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="friend-detail-section" class="section-transition">
+            <label>เพื่อนที่ไหน?</label>
+            <div class="button-grid">
+                <div id="work-btn" class="detail-button" onclick="selectFriendFrom('work')">
+                    <svg class="detail-button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                    <span class="button-text">ที่ทำงาน</span>
+                </div>
+                <div id="bachelor-btn" class="detail-button" onclick="selectFriendFrom('bachelor')">
+                    <svg class="detail-button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+                    </svg>
+                    <span class="button-text">ป.ตรี</span>
+                </div>
+                <div id="master-btn" class="detail-button" onclick="selectFriendFrom('master')">
+                    <svg class="detail-button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+                    </svg>
+                    <span class="button-text">ป.โท</span>
+                </div>
+                <div id="other-btn" class="detail-button" onclick="selectFriendFrom('other')">
+                    <svg class="detail-button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                    </svg>
+                    <span class="button-text">อื่นๆ</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="relative-detail-section" class="section-transition">
+            <label>ญาติฝั่งไหน?</label>
+            <div class="button-grid">
+                <div id="father-btn" class="detail-button" onclick="selectRelativeFrom('father')">
+                    <span class="button-text">ฝั่งพ่อ</span>
+                </div>
+                <div id="mother-btn" class="detail-button" onclick="selectRelativeFrom('mother')">
+                    <span class="button-text">ฝั่งแม่</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="name-section" class="section-transition">
+            <label>ชื่ออะไร?</label>
+            <select id="name-select" onchange="selectName()">
+                <option value="">-- เลือก --</option>
+            </select>
+        </div>
+        
+        <!-- Result Section -->
+        <div id="result-container" class="result-container hidden">
+            <div class="result-bg"></div>
+            <div class="result-content">
+                <svg class="map-pin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <div class="result-name">ยินดีต้อนรับคุณ <span id="result-name-text"></span></div>
+                <div class="result-table">กรุณาไปที่โต๊ะหมายเลข <span id="result-table-number"></span></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>ขอบคุณที่มาร่วมเป็นส่วนหนึ่งในวันพิเศษของเรา</p>
+    </div>
+    
+    <!-- Canvas for confetti -->
+    <canvas id="confetti-canvas"></canvas>
+    
+    <script>
+        // Guest data
+        const guestData = {
+            groom: {
+                friend: {
+                    work: {
+                        "John": 1,
+                        "Tom": 2
+                    },
+                    bachelor: {
+                        "Alice": 3,
+                        "Bob": 4
+                    },
+                    master: {
+                        "Charlie": 5,
+                        "Daisy": 6
+                    },
+                    other: {
+                        "Eve": 7,
+                        "Frank": 8
+                    }
+                },
+                relative: {
+                    father: {
+                        "George": 9,
+                        "Hannah": 10
+                    },
+                    mother: {
+                        "Ivan": 5,
+                        "Julia": 6
+                    }
+                }
+            },
+            bride: {
+                friend: {
+                    work: {
+                        "Sarah": 11,
+                        "Michael": 12
+                    },
+                    bachelor: {
+                        "Emma": 13,
+                        "David": 14
+                    },
+                    master: {
+                        "Olivia": 15,
+                        "James": 16
+                    },
+                    other: {
+                        "Sophia": 17,
+                        "William": 18
+                    }
+                },
+                relative: {
+                    father: {
+                        "Elizabeth": 19,
+                        "Richard": 20
+                    },
+                    mother: {
+                        "Victoria": 15,
+                        "Alexander": 16
+                    }
+                }
+            }
+        };
+        
+        // State variables
+        let personType = "";
+        let relation = "";
+        let friendFrom = "";
+        let relativeFrom = "";
+        let selectedName = "";
+        
+        // DOM Elements
+        const relationSection = document.getElementById('relation-section');
+        const friendDetailSection = document.getElementById('friend-detail-section');
+        const relativeDetailSection = document.getElementById('relative-detail-section');
+        const nameSection = document.getElementById('name-section');
+        const nameSelect = document.getElementById('name-select');
+        const resultContainer = document.getElementById('result-container');
+        const resultNameText = document.getElementById('result-name-text');
+        const resultTableNumber = document.getElementById('result-table-number');
+        
+        // Person Type Selection
+        function selectPersonType(type) {
+            console.log("Selected person type:", type);
+            personType = type;
+            
+            // Reset dependent fields
+            relation = "";
+            friendFrom = "";
+            relativeFrom = "";
+            selectedName = "";
+            
+            // Update UI
+            document.getElementById('groom-btn').className = type === 'groom' ? 'button selected-groom' : 'button';
+            document.getElementById('bride-btn').className = type === 'bride' ? 'button selected-bride' : 'button';
+            
+            // Show relation section
+            relationSection.className = 'section-transition active';
+            
+            // Hide dependent sections
+            friendDetailSection.className = 'section-transition';
+            relativeDetailSection.className = 'section-transition';
+            nameSection.className = 'section-transition';
+            resultContainer.className = 'result-container hidden';
+            
+            // Reset relation buttons
+            document.getElementById('friend-btn').className = 'button';
+            document.getElementById('relative-btn').className = 'button';
+        }
+        
+        // Relation Selection
+        function selectRelation(type) {
+            console.log("Selected relation:", type);
+            relation = type;
+            
+            // Reset dependent fields
+            friendFrom = "";
+            relativeFrom = "";
+            selectedName = "";
+            
+            // Update UI
+            document.getElementById('friend-btn').className = type === 'friend' ? 'button selected-friend' : 'button';
+            document.getElementById('relative-btn').className = type === 'relative' ? 'button selected-relative' : 'button';
+            
+            // Show appropriate detail section
+            if (type === 'friend') {
+                friendDetailSection.className = 'section-transition active';
+                relativeDetailSection.className = 'section-transition';
+            } else if (type === 'relative') {
+                friendDetailSection.className = 'section-transition';
+                relativeDetailSection.className = 'section-transition active';
+            }
+            
+            // Hide dependent sections
+            nameSection.className = 'section-transition';
+            resultContainer.className = 'result-container hidden';
+            
+            // Reset detail buttons
+            document.getElementById('work-btn').className = 'detail-button';
+            document.getElementById('bachelor-btn').className = 'detail-button';
+            document.getElementById('master-btn').className = 'detail-button';
+            document.getElementById('other-btn').className = 'detail-button';
+            document.getElementById('father-btn').className = 'detail-button';
+            document.getElementById('mother-btn').className = 'detail-button';
+        }
+        
+        // Friend Detail Selection
+        function selectFriendFrom(type) {
+            console.log("Selected friend from:", type);
+            friendFrom = type;
+            selectedName = "";
+            
+            // Update UI
+            document.getElementById('work-btn').className = type === 'work' ? 'detail-button selected-friend-detail' : 'detail-button';
+            document.getElementById('bachelor-btn').className = type === 'bachelor' ? 'detail-button selected-friend-detail' : 'detail-button';
+            document.getElementById('master-btn').className = type === 'master' ? 'detail-button selected-friend-detail' : 'detail-button';
+            document.getElementById('other-btn').className = type === 'other' ? 'detail-button selected-friend-detail' : 'detail-button';
+            
+            // Populate names dropdown
+            populateNames();
+            
+            // Show name section
+            nameSection.className = 'section-transition active';
+            
+            // Hide result
+            resultContainer.className = 'result-container hidden';
+        }
+        
+        // Relative Detail Selection
+        function selectRelativeFrom(type) {
+            console.log("Selected relative from:", type);
+            relativeFrom = type;
+            selectedName = "";
+            
+            // Update UI
+            document.getElementById('father-btn').className = type === 'father' ? 'detail-button selected-relative-detail' : 'detail-button';
+            document.getElementById('mother-btn').className = type === 'mother' ? 'detail-button selected-relative-detail' : 'detail-button';
+            
+            // Populate names dropdown
+            populateNames();
+            
+            // Show name section
+            nameSection.className = 'section-transition active';
+            
+            // Hide result
+            resultContainer.className = 'result-container hidden';
+        }
+        
+        // Populate Names Dropdown
+        function populateNames() {
+            // Clear previous options
+            nameSelect.innerHTML = '<option value="">-- เลือก --</option>';
+            
+            let names = {};
+            if (relation === 'friend' && friendFrom) {
+                names = guestData[personType]?.friend?.[friendFrom] || {};
+            } else if (relation === 'relative' && relativeFrom) {
+                names = guestData[personType]?.relative?.[relativeFrom] || {};
+            }
+            
+            // Add options
+            for (const name in names) {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                nameSelect.appendChild(option);
+            }
+        }
+        
+        // Name Selection
+        function selectName() {
+            selectedName = nameSelect.value;
+            
+            if (selectedName) {
+                // Get table number
+                let tableNumber = null;
+                if (relation === 'friend' && friendFrom) {
+                    tableNumber = guestData[personType]?.friend?.[friendFrom]?.[selectedName];
+                } else if (relation === 'relative' && relativeFrom) {
+                    tableNumber = guestData[personType]?.relative?.[relativeFrom]?.[selectedName];
+                }
+                
+                if (tableNumber) {
+                    // Update result
+                    resultNameText.textContent = selectedName;
+                    resultTableNumber.textContent = tableNumber;
+                    
+                    // Show result
+                    resultContainer.className = 'result-container';
+                    
+                    // Trigger confetti
+                    setTimeout(() => {
+                        triggerConfetti();
+                    }, 300);
+                }
+            }
+        }
+        
+        // Confetti Effect
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Create confetti particles
+            const particles = [];
+            const particleCount = 100;
+            const gravity = 0.5;
+            const colors = [
+                '#f43f5e', '#ec4899', '#d946ef', '#a855f7', 
+                '#8b5cf6', '#6366f1', '#3b82f6', '#0ea5e9'
+            ];
+            
+            // Particle class
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height - canvas.height;
+                    this.radius = Math.random() * 4 + 1;
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.velocity = {
+                        x: Math.random() * 6 - 3,
+                        y: Math.random() * 3 + 3
+                    };
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = Math.random() * 10 - 5;
+                    this.shape = Math.random() > 0.5 ? 'circle' : 'rect';
+                }
+                
+                update() {
+                    this.velocity.y += gravity * 0.1;
+                    this.x += this.velocity.x;
+                    this.y += this.velocity.y;
+                    this.rotation += this.rotationSpeed;
+                    
+                    if (this.y > canvas.height) {
+                        this.y = -10;
+                        this.velocity.y = Math.random() * 3 + 3;
+                    }
+                }
+                
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation * Math.PI / 180);
+                    ctx.fillStyle = this.color;
+                    
+                    if (this.shape === 'circle') {
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else {
+                        ctx.fillRect(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
+                    }
+                    
+                    ctx.restore();
+                }
+            }
+            
+            // Create particles
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+            
+            // Animation loop
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+                
+                // Check if all particles are below the canvas
+                const allBelow = particles.every(p => p.y > canvas.height);
+                
+                if (!allBelow) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            
+            animate();
+        }
+        
+        // Handle window resize for confetti canvas
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('confetti-canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
